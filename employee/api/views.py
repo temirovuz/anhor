@@ -1,7 +1,8 @@
 from rest_framework import generics
 
-from employee.api.serializers import AccessTimeSerializer, WorkingDaySerializer, DepartureTimeSerializer
-from employee.models import WorkingDay, AccessTimes, DepartureTimes
+from employee.api.serializers import AccessTimeSerializer, WorkingDaySerializer, DepartureTimeSerializer, \
+    ProductSerializer
+from employee.models import WorkingDay, AccessTimes, DepartureTimes, Product
 
 
 class WorkingDayAPIView(generics.ListCreateAPIView):
@@ -17,3 +18,8 @@ class AccessTimeAPIView(generics.ListCreateAPIView):
 class DepartureTimeAPIView(generics.ListCreateAPIView):
     queryset = DepartureTimes.objects.all()
     serializer_class = DepartureTimeSerializer
+
+
+class ProductAPIView(generics.ListCreateAPIView):
+    queryset = Product.objects.all()
+    serializer_class = ProductSerializer
