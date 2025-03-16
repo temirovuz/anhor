@@ -64,7 +64,7 @@ class ProductAPIView(generics.ListCreateAPIView):
         name = request.data.get('name')
         if not name:
             return Response({"error": "Siz hech qanday malumot kiritmadingiz"})
-        if DepartureTimes.objects.filter(name=name).exists():
+        if Product.objects.filter(name=name).exists():
             return Response({'error': 'Bu Nomli maxsulot mavjud'}, status=status.HTTP_400_BAD_REQUEST)
         return super().create(request, *args, **kwargs)
 
@@ -76,7 +76,7 @@ class DailyProductAPIView(generics.ListCreateAPIView):
     def get_queryset(self):
         date_id = self.request.query_params.get('date')
         if not date_id:
-            return DailyProduction.objects.all()
+           return DailyProduction.objects.none()
 
         working_day = get_object_or_404(WorkingDay, id=date_id)
         return DailyProduction.objects.filter(date=working_day)
