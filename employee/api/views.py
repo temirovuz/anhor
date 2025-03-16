@@ -69,19 +69,14 @@ class ProductAPIView(generics.ListCreateAPIView):
         return super().create(request, *args, **kwargs)
 
 
-class DailyProductAPIView(views.APIView):
-    def post(self, request):
-        serializer = DailyProductSerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+class DailyProductAPIView(generics.ListCreateAPIView):
+    queryset = DailyProduction.objects.all()
+    serializer_class = DailyProductSerializer
 
-    def get(self, request):
-        date_id = request.query_params.get('date')
+    def get_queryset(self):
+        date_id = self.request.query_params.get('date')
         if not date_id:
-            return Response({'error': 'Kerakli sanani tanlang'}, status=status.HTTP_400_BAD_REQUEST)
+            return DailyProduction.objects.all()
+
         working_day = get_object_or_404(WorkingDay, id=date_id)
-        products = DailyProduction.objects.filter(date=working_day)
-        serializer = DailyProductSerializer(products, many=True)
-        return Response(serializer.data, status=status.HTTP_200_OK)
+        return DailyProduction.objects.filter(date=working_day)
