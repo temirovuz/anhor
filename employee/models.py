@@ -36,14 +36,8 @@ class DailyProduction(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name="productions")
     total_quantity = models.IntegerField()
 
-    @property
-    def total_amount(self):
-        """Kunlik ishlab chiqarilgan mahsulot qiymati."""
-        return self.total_quantity * self.product.price_per_unit
-
     def __str__(self):
-        return f"{self.date} - {self.product.name}: {self.total_quantity} dona"
-
+        return f"{self.date} - {self.product} - {self.total_quantity}"
 
 class Employee(models.Model):
     CHOICE_TYPE = [
